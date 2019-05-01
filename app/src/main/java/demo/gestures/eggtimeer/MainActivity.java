@@ -6,15 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     TextView timerTextView;
     SeekBar timerSeekBar;
+    Boolean counterIsActive=false;
+    Button goButton;
 
     public void buttonClicked(View view){
-        //Log.i("Button Clicked","It works");
+        Log.i("Button Clicked","It works");
+
+        counterIsActive=true;
+        timerSeekBar.setEnabled(false);
+        goButton.setText("STOP!");
+
 
         new CountDownTimer(timerSeekBar.getProgress()*1000,1000){
 
@@ -55,6 +63,7 @@ updateTimer((int) millisUntilFinished/1000);
 
         timerSeekBar=findViewById(R.id.timerSeekBar);
         timerTextView=findViewById(R.id.countdownTextView);
+        goButton=findViewById(R.id.goButton);
 
         timerSeekBar.setMax(600);
         timerSeekBar.setProgress(30);
