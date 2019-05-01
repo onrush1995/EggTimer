@@ -2,10 +2,16 @@ package demo.gestures.eggtimeer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    public void buttonClicked(View view){
+        Log.i("Button Clicked","It works");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
