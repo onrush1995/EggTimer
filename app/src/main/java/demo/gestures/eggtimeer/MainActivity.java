@@ -1,5 +1,7 @@
 package demo.gestures.eggtimeer;
 
+import android.media.MediaPlayer;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,9 +10,42 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    TextView timerTextView;
+    SeekBar timerSeekBar;
 
     public void buttonClicked(View view){
-        Log.i("Button Clicked","It works");
+        //Log.i("Button Clicked","It works");
+
+        new CountDownTimer(timerSeekBar.getProgress()*1000,1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+updateTimer((int) millisUntilFinished/1000);
+            }
+
+            @Override
+            public void onFinish() {
+                MediaPlayer mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.alarm);
+                mediaPlayer.start();
+
+            }
+        }.start();
+    }
+
+    public void updateTimer(int secondsLeft){
+
+        int minutes=secondsLeft/60;
+        int seconds=secondsLeft-(minutes*60);
+
+        String secondString=Integer.toString(seconds);
+        if (seconds <=9){
+            secondString="0"+secondString;
+
+
+        }
+
+        timerTextView.setText(Integer.toString(minutes)+":"+secondString);
+
     }
 
     @Override
@@ -18,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SeekBar timerSeekBar=findViewById(R.id.timerSeekBar);
-        final TextView timerTextView=findViewById(R.id.countdownTextView);
+        timerSeekBar=findViewById(R.id.timerSeekBar);
+        timerTextView=findViewById(R.id.countdownTextView);
 
         timerSeekBar.setMax(600);
         timerSeekBar.setProgress(30);
@@ -27,17 +62,9 @@ public class MainActivity extends AppCompatActivity {
         timerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int minutes=progress/60;
-                int seconds=progress-(minutes*60);
-
-                String secondString=Integer.toString(seconds);
-                if (secondString.equals("0")){
-                    secondString="00";
 
 
-                }
-
-                timerTextView.setText(Integer.toString(minutes)+":"+secondString);
+                updateTimer(progress);
             }
 
             @Override
