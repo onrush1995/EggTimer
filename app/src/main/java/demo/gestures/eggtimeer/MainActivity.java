@@ -24,7 +24,14 @@ public class MainActivity extends AppCompatActivity {
                 int minutes=progress/60;
                 int seconds=progress-(minutes*60);
 
-                timerTextView.setText(Integer.toString(minutes)+":"+Integer.toString(seconds));
+                String secondString=Integer.toString(seconds);
+                if (secondString.equals("0")){
+                    secondString="00";
+
+
+                }
+
+                timerTextView.setText(Integer.toString(minutes)+":"+secondString);
             }
 
             @Override
