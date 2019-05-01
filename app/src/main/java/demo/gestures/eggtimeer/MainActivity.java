@@ -15,29 +15,47 @@ public class MainActivity extends AppCompatActivity {
     SeekBar timerSeekBar;
     Boolean counterIsActive=false;
     Button goButton;
+    CountDownTimer countDownTimer;
 
-    public void buttonClicked(View view){
-        Log.i("Button Clicked","It works");
+    public void resetTimer(){
+        timerTextView.setText("0:30");
+        timerSeekBar.setProgress(30);
+        timerSeekBar.setEnabled(true);
+        countDownTimer.cancel();
+        goButton.setText("GO!");
+        counterIsActive=false;
 
-        counterIsActive=true;
-        timerSeekBar.setEnabled(false);
-        goButton.setText("STOP!");
+    }
+
+    public void buttonClicked(View view) {
+        Log.i("Button Clicked", "It works");
+
+        if (counterIsActive) {
+resetTimer();
+
+        } else {
+
+            counterIsActive = true;
+            timerSeekBar.setEnabled(false);
+            goButton.setText("STOP!");
 
 
-        new CountDownTimer(timerSeekBar.getProgress()*1000,1000){
+            countDownTimer=new CountDownTimer(timerSeekBar.getProgress() * 1000, 1000) {
 
-            @Override
-            public void onTick(long millisUntilFinished) {
-updateTimer((int) millisUntilFinished/1000);
-            }
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    updateTimer((int) millisUntilFinished / 1000);
+                }
 
-            @Override
-            public void onFinish() {
-                MediaPlayer mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.alarm);
-                mediaPlayer.start();
+                @Override
+                public void onFinish() {
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alarm);
+                    mediaPlayer.start();
+                    resetTimer();
 
-            }
-        }.start();
+                }
+            }.start();
+        }
     }
 
     public void updateTimer(int secondsLeft){
